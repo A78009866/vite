@@ -91,7 +91,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'social.CustomUser'
+AUTH_USER_MODEL = 'vite.CustomUser'
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dvp5v8v90',
