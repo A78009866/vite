@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-m(x8xu413g_0^_dfyrw#)mjc_gn7szcc-kx^*pf9xhabh99gjs')
 
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['social-vite.onrender.com', '127.0.0.1', 'localhost', '*']
 
