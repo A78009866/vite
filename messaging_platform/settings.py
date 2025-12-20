@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'crispy_forms',            # التصحيح: الاسم البرمجي للمكتبة
     'crispy_bootstrap5',       # لدعم تنسيقات بوتستراب 5
-    'social', 
+    'vite', 
     'cloudinary',
     'cloudinary_storage',
 ]
