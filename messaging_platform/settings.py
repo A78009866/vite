@@ -2,18 +2,14 @@ import os
 from pathlib import Path
 import dj_database_url
 
-# المسار الأساسي للمشروع
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# مفتاح الأمان (يُفضل وضعه في متغير بيئة على Render)
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-m(x8xu413g_0^_dfyrw#)mjc_gn7szcc-kx^*pf9xhabh99gjs')
 
-# وضع التصحيح - اجعله False في Render
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['social-vite.onrender.com', '127.0.0.1', 'localhost', '*']
 
-# التطبيقات المثبتة
 INSTALLED_APPS = [
     'daphne',
     'django.contrib.admin',
@@ -24,7 +20,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',
     'django.contrib.humanize',
-    'social', 
+    'django_crispy_forms', # أضفنا هذا بناءً على المتطلبات
+    'social', # تأكد أن هذا هو اسم المجلد الذي يحتوي على views.py و models.py
     'cloudinary',
     'cloudinary_storage',
 ]
@@ -40,6 +37,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# تأكد أن هذا المسار يطابق اسم مشروعك الأساسي
 ROOT_URLCONF = 'messaging_platform.urls'
 
 TEMPLATES = [
@@ -61,18 +59,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'messaging_platform.wsgi.application'
 ASGI_APPLICATION = 'messaging_platform.asgi.application'
 
-# إعداد قاعدة بيانات Neon (الرابط الذي أرسلته)
-NEON_DATABASE_URL = "postgresql://neondb_owner:npg_TR9JWPCDy7rh@ep-twilight-snow-ad502c4s-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require"
+# إعداد قاعدة بيانات Neon
+NEON_URL = "postgresql://neondb_owner:npg_TR9JWPCDy7rh@ep-twilight-snow-ad502c4s-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require"
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL', NEON_DATABASE_URL),
+        default=os.environ.get('DATABASE_URL', NEON_URL),
         conn_max_age=600,
         ssl_require=True
     )
 }
 
-# التحقق من كلمة المرور
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -80,25 +77,18 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# إعدادات اللغة والوقت
 LANGUAGE_CODE = 'ar'
 TIME_ZONE = 'Africa/Algiers'
 USE_I18N = True
 USE_TZ = True
 
-# الملفات الثابتة
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# الميديا
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'social.CustomUser'
 
-# إعدادات Cloudinary
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dvp5v8v90',
     'API_KEY': '164434235282213',
