@@ -20,11 +20,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',
     'django.contrib.humanize',
-    'django_crispy_forms', # أضفنا هذا بناءً على المتطلبات
-    'social', # تأكد أن هذا هو اسم المجلد الذي يحتوي على views.py و models.py
+    'crispy_forms',            # التصحيح: الاسم البرمجي للمكتبة
+    'crispy_bootstrap5',       # لدعم تنسيقات بوتستراب 5
+    'social', 
     'cloudinary',
     'cloudinary_storage',
 ]
+
+# إعدادات Crispy Forms
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -37,7 +42,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# تأكد أن هذا المسار يطابق اسم مشروعك الأساسي
 ROOT_URLCONF = 'messaging_platform.urls'
 
 TEMPLATES = [
@@ -59,12 +63,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'messaging_platform.wsgi.application'
 ASGI_APPLICATION = 'messaging_platform.asgi.application'
 
-# إعداد قاعدة بيانات Neon
-NEON_URL = "postgresql://neondb_owner:npg_TR9JWPCDy7rh@ep-twilight-snow-ad502c4s-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require"
+# قاعدة بيانات Neon (الرابط الخاص بك)
+NEON_DATABASE_URL = "postgresql://neondb_owner:npg_TR9JWPCDy7rh@ep-twilight-snow-ad502c4s-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require"
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL', NEON_URL),
+        default=os.environ.get('DATABASE_URL', NEON_DATABASE_URL),
         conn_max_age=600,
         ssl_require=True
     )
