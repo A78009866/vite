@@ -9,14 +9,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --bg-dark: #18191a; 
+            --bg-dark: #18191a;
             --bg-darker: #242526;
-            --bg-light: #3a3b3c; 
-            --primary: #e4e6eb;   
-            --secondary: #b0b3b8; 
+            --bg-light: #3a3b3c;
+            --primary: #e4e6eb;
+            --secondary: #b0b3b8;
             --border: #3e4042;
             --input-bg: var(--bg-darker);
-            --input-focus-border: #3982f7; 
+            --input-focus-border: #3982f7;
             --button-primary-bg: #3982f7;
             --button-primary-hover-bg: #3071e2;
             --button-primary-text: var(--primary);
@@ -55,9 +55,6 @@
             font-weight: 600;
             text-decoration: none;
         }
-        .brand-text:hover {
-            color: var(--secondary) !important;
-        }
 
         .card {
             background-color: var(--bg-light);
@@ -77,7 +74,7 @@
         }
 
         .form-group {
-            margin-bottom: 22px;
+            margin-bottom: 20px;
             position: relative;
         }
 
@@ -88,7 +85,7 @@
             color: var(--secondary);
         }
 
-        .form-control, .form-select {
+        .form-control {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid var(--border);
@@ -103,26 +100,10 @@
              padding: 12px 40px 12px 15px;
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus {
             border-color: var(--input-focus-border);
             outline: none;
             box-shadow: 0 0 5px rgba(57, 130, 247, 0.5);
-        }
-
-        .form-control::placeholder {
-            color: var(--secondary);
-        }
-
-        .select-date-widget select {
-            display: inline-block;
-            width: calc(33.33% - 10px);
-            margin-left: 5px;
-            margin-bottom: 5px;
-            padding: 10px;
-            background-color: var(--input-bg);
-            color: var(--primary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
         }
 
         .toggle-password {
@@ -146,7 +127,7 @@
             font-size: 16px;
             font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
+            transition: all 0.3s;
         }
 
         .btn-primary:hover {
@@ -159,7 +140,7 @@
             background-color: var(--error-bg);
             padding: 10px 15px;
             border-radius: 6px;
-            margin-top: 10px;
+            margin-bottom: 15px;
             font-size: 0.9em;
         }
 
@@ -176,72 +157,39 @@
         }
 
         @media (max-width: 480px) {
-            .select-date-widget select {
-                width: 100%;
-                margin-left: 0;
-                margin-bottom: 10px;
-            }
+            .card { padding: 20px; }
+            .card-title { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
     <div class="logo-container">
-        <a class="brand-text" href="{% url 'home' %}"> 
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/1000084215-removebg-preview.png" class="logo-img" alt="Trimer">
+        <a class="brand-text" href="#"> 
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/1000084215-removebg-preview.png" class="logo-img" alt="شعار Trimer">
             Trimer
         </a>
     </div>
 
     <div class="card">
-        <h2 class="card-title">إنشاء حساب جديد</h2>
-
+        <h2 class="card-title">إنشاء حساب</h2>
+        
         {% if form.non_field_errors %}
             {% for error in form.non_field_errors %}
                 <div class="error-message">{{ error }}</div>
             {% endfor %}
         {% endif %}
 
-        {% if form.errors %}
-            <div class="alert alert-danger" style="background: transparent; border: none; color: var(--error-text); font-size: 0.85em;">
-                يرجى مراجعة الحقول الحمراء بالأسفل.
-            </div>
-        {% endif %}
-
-        <form method="POST" action="{% url 'register' %}" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-
+            
             <div class="form-group">
                 <label for="{{ form.username.id_for_label }}" class="form-label">{{ form.username.label }}</label>
                 {{ form.username }}
-                {% if form.username.errors %}
-                    {% for error in form.username.errors %}<div class="field-error text-danger small">{{ error }}</div>{% endfor %}
-                {% endif %}
             </div>
 
             <div class="form-group">
                 <label for="{{ form.full_name.id_for_label }}" class="form-label">{{ form.full_name.label }}</label>
                 {{ form.full_name }}
-            </div>
-
-             <div class="form-group">
-                <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
-                {{ form.email }}
-            </div>
-
-            <div class="form-group">
-                <label for="id_password1" class="form-label">كلمة المرور</label>
-                <div style="position: relative;">
-                    <input type="password" name="password1" class="form-control password-field" required id="id_password1" placeholder="********">
-                    <i class="fas fa-eye toggle-password" data-target="id_password1"></i>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="id_password2" class="form-label">تأكيد كلمة المرور</label>
-                <div style="position: relative;">
-                     <input type="password" name="password2" class="form-control password-field" required id="id_password2" placeholder="********">
-                    <i class="fas fa-eye toggle-password" data-target="id_password2"></i>
-                </div>
             </div>
 
             <div class="form-group">
@@ -250,23 +198,22 @@
             </div>
 
             <div class="form-group">
-                <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">{{ form.date_of_birth.label }}</label>
-                <div class="select-date-widget">
-                     {{ form.date_of_birth }}
+                <label for="{{ form.password1.id_for_label }}" class="form-label">{{ form.password1.label }}</label>
+                <div style="position: relative;">
+                    <input type="password" name="{{ form.password1.name }}" class="form-control password-field" required id="{{ form.password1.id_for_label }}">
+                    <i class="fas fa-eye toggle-password" data-target="{{ form.password1.id_for_label }}"></i>
                 </div>
             </div>
 
-             <div class="form-group">
-                <label for="{{ form.gender.id_for_label }}" class="form-label">{{ form.gender.label }}</label>
-                {{ form.gender }}
-            </div>
-
             <div class="form-group">
-                <label for="{{ form.relationship_status.id_for_label }}" class="form-label">{{ form.relationship_status.label }}</label>
-                {{ form.relationship_status }}
+                <label for="{{ form.password2.id_for_label }}" class="form-label">{{ form.password2.label }}</label>
+                <div style="position: relative;">
+                     <input type="password" name="{{ form.password2.name }}" class="form-control password-field" required id="{{ form.password2.id_for_label }}">
+                    <i class="fas fa-eye toggle-password" data-target="{{ form.password2.id_for_label }}"></i>
+                </div>
             </div>
 
-            <button type="submit" class="btn-primary">إنشاء حساب</button>
+            <button type="submit" class="btn-primary">تسجيل الآن</button>
         </form>
 
         <div class="text-center">
@@ -275,7 +222,7 @@
     </div>
 
     <script>
-        // كود تبديل رؤية كلمة المرور
+        // إخفاء وإظهار كلمة المرور
         document.querySelectorAll('.toggle-password').forEach(item => {
             item.addEventListener('click', function () {
                 const targetId = this.getAttribute('data-target');
@@ -290,15 +237,12 @@
             });
         });
 
-        // تنسيق الحقول تلقائياً لتناسب التصميم
+        // تنسيق الحقول تلقائياً
         document.addEventListener('DOMContentLoaded', function() {
-            const inputs = document.querySelectorAll('input:not([type="checkbox"]), select');
-            inputs.forEach(input => {
-                if (input.tagName === 'SELECT') {
-                    input.classList.add('form-select');
-                } else {
-                    input.classList.add('form-control');
-                }
+            const fieldsToStyle = ['username', 'full_name', 'profile_picture'];
+            fieldsToStyle.forEach(fieldName => {
+                const field = document.querySelector(`[name="${fieldName}"]`);
+                if (field) field.classList.add('form-control');
             });
         });
     </script>
