@@ -362,15 +362,24 @@ def register(request):
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             user_obj = form.save(commit=False)
+            # رفع صورة البروفيل إلى Cloudinary
             if 'profile_picture' in request.FILES:
-                user_obj.profile_picture = cloudinary.uploader.upload(request.FILES['profile_picture'])['url']
+                try:
+                    upload_result = cloudinary.uploader.upload(request.FILES['profile_picture'])
+                    user_obj.profile_picture = upload_result.get('url')
+                except Exception as e:
+                    messages.error(request, "خطأ في رفع الصورة، حاول مرة أخرى.")
+                    return render(request, 'social/register.html', {'form': form})
+            
             user_obj.save()
-            auth_login(request, user_obj)
+            auth_login(request, user_obj) # تسجيل دخول تلقائي
             return redirect('home')
+        else:
+            messages.error(request, "يرجى تصحيح الأخطاء في البيانات المدخلة.")
     else:
         form = CustomUserCreationForm()
     return render(request, 'social/register.html', {'form': form})
-
+    
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
