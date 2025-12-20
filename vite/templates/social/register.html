@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إنشاء حساب جديد - Trimer</title>
+    <title>إنشاء حساب جديد</title>
     <link rel="icon" type="image/jpg" href="https://upload.wikimedia.org/wikipedia/commons/4/46/1000084215-removebg-preview.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --bg-dark: #18191a;
+            --bg-dark: #18191a; /* Slightly darker base */
             --bg-darker: #242526;
-            --bg-light: #3a3b3c;
-            --primary: #e4e6eb;
-            --secondary: #b0b3b8;
+            --bg-light: #3a3b3c; /* Card background */
+            --primary: #e4e6eb;   /* Primary text color */
+            --secondary: #b0b3b8; /* Secondary text color */
             --border: #3e4042;
             --input-bg: var(--bg-darker);
-            --input-focus-border: #3982f7;
+            --input-focus-border: #3982f7; /* More vibrant focus */
             --button-primary-bg: #3982f7;
             --button-primary-hover-bg: #3071e2;
             --button-primary-text: var(--primary);
@@ -55,6 +55,9 @@
             font-weight: 600;
             text-decoration: none;
         }
+        .brand-text:hover {
+            color: var(--secondary) !important;
+        }
 
         .card {
             background-color: var(--bg-light);
@@ -74,7 +77,7 @@
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             position: relative;
         }
 
@@ -85,7 +88,7 @@
             color: var(--secondary);
         }
 
-        .form-control {
+        .form-control, .form-select { /* Added .form-select */
             width: 100%;
             padding: 12px 15px;
             border: 1px solid var(--border);
@@ -95,25 +98,48 @@
             font-size: 16px;
             transition: border-color 0.3s;
         }
-
-        .form-control.password-field {
+        .form-control.password-field { /* Specific for password to keep eye icon space */
              padding: 12px 40px 12px 15px;
         }
 
-        .form-control:focus {
+
+        .form-control:focus, .form-select:focus { /* Added .form-select */
             border-color: var(--input-focus-border);
             outline: none;
             box-shadow: 0 0 5px rgba(57, 130, 247, 0.5);
         }
 
+        .form-control::placeholder {
+            color: var(--secondary);
+        }
+         /* Styling for SelectDateWidget */
+        .select-date-widget select {
+            display: inline-block;
+            width: calc(33.33% - 10px); /* Adjust width as needed */
+            margin-left: 5px; /* Spacing between selects */
+            margin-bottom: 5px; /* Spacing if they wrap */
+            padding: 10px;
+            background-color: var(--input-bg);
+            color: var(--primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+        .select-date-widget select:last-child {
+            margin-left: 0;
+        }
+        .select-date-widget select:focus {
+            border-color: var(--input-focus-border);
+            outline: none;
+        }
+
         .toggle-password {
             position: absolute;
             top: 50%;
-            left: 12px;
+            left: 12px; /* Adjusted for better visual balance in RTL */
             transform: translateY(-50%);
             cursor: pointer;
             color: var(--secondary);
-            font-size: 18px;
+            font-size: 18px; /* Slightly larger icon */
             z-index: 10;
         }
 
@@ -127,7 +153,7 @@
             font-size: 16px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
         }
 
         .btn-primary:hover {
@@ -140,9 +166,15 @@
             background-color: var(--error-bg);
             padding: 10px 15px;
             border-radius: 6px;
-            margin-bottom: 15px;
+            margin-top: 10px;
             font-size: 0.9em;
         }
+         .field-error {
+            color: var(--error-text);
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
 
         .text-center {
             margin-top: 20px;
@@ -156,47 +188,71 @@
             font-weight: 500;
         }
 
+        .text-center a:hover {
+            text-decoration: underline;
+        }
+
+        /* Small adjustments for mobile */
         @media (max-width: 480px) {
-            .card { padding: 20px; }
-            .card-title { font-size: 1.6rem; }
+            .card {
+                padding: 20px;
+            }
+            .card-title {
+                font-size: 1.6rem;
+                margin-bottom: 20px;
+            }
+            .form-control, .form-select { /* Added .form-select */
+                font-size: 15px;
+            }
+            .btn-primary {
+                font-size: 15px;
+            }
+            .toggle-password {
+                font-size: 16px;
+                left: 10px;
+            }
+            .select-date-widget select {
+                width: 100%; /* Full width on small screens */
+                margin-left: 0;
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="logo-container">
-        <a class="brand-text" href="#"> 
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/1000084215-removebg-preview.png" class="logo-img" alt="شعار Trimer">
+        <a class="brand-text" href="#"> <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/1000084215-removebg-preview.png" class="logo-img" alt="شعار Trimer">
             Trimer
         </a>
     </div>
 
     <div class="card">
-        <h2 class="card-title">إنشاء حساب</h2>
-        
+        <h2 class="card-title">إنشاء حساب جديد</h2>
         {% if form.non_field_errors %}
             {% for error in form.non_field_errors %}
                 <div class="error-message">{{ error }}</div>
             {% endfor %}
         {% endif %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                 <div class="error-message">{{ field.label }}: {{ error }}</div>
+            {% endfor %}
+        {% endfor %}
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            
             <div class="form-group">
                 <label for="{{ form.username.id_for_label }}" class="form-label">{{ form.username.label }}</label>
                 {{ form.username }}
             </div>
-
             <div class="form-group">
                 <label for="{{ form.full_name.id_for_label }}" class="form-label">{{ form.full_name.label }}</label>
                 {{ form.full_name }}
             </div>
-
-            <div class="form-group">
-                <label for="{{ form.profile_picture.id_for_label }}" class="form-label">{{ form.profile_picture.label }}</label>
-                {{ form.profile_picture }}
+             <div class="form-group">
+                <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
+                {{ form.email }}
             </div>
-
             <div class="form-group">
                 <label for="{{ form.password1.id_for_label }}" class="form-label">{{ form.password1.label }}</label>
                 <div style="position: relative;">
@@ -204,7 +260,6 @@
                     <i class="fas fa-eye toggle-password" data-target="{{ form.password1.id_for_label }}"></i>
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="{{ form.password2.id_for_label }}" class="form-label">{{ form.password2.label }}</label>
                 <div style="position: relative;">
@@ -212,37 +267,63 @@
                     <i class="fas fa-eye toggle-password" data-target="{{ form.password2.id_for_label }}"></i>
                 </div>
             </div>
+            <div class="form-group">
+                <label for="{{ form.profile_picture.id_for_label }}" class="form-label">{{ form.profile_picture.label }}</label>
+                {{ form.profile_picture }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">{{ form.date_of_birth.label }}</label>
+                <div class="select-date-widget">
+                     {{ form.date_of_birth }}
+                </div>
+            </div>
+             <div class="form-group">
+                <label for="{{ form.gender.id_for_label }}" class="form-label">{{ form.gender.label }}</label>
+                {{ form.gender }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.relationship_status.id_for_label }}" class="form-label">{{ form.relationship_status.label }}</label>
+                {{ form.relationship_status }}
+            </div>
 
-            <button type="submit" class="btn-primary">تسجيل الآن</button>
+            <button type="submit" class="btn-primary">إنشاء حساب</button>
         </form>
-
         <div class="text-center">
             لديك حساب بالفعل؟ <a href="{% url 'login' %}">تسجيل الدخول</a>
         </div>
     </div>
-
     <script>
-        // إخفاء وإظهار كلمة المرور
         document.querySelectorAll('.toggle-password').forEach(item => {
             item.addEventListener('click', function () {
                 const targetId = this.getAttribute('data-target');
                 const passwordField = document.getElementById(targetId);
                 if (passwordField.type === "password") {
                     passwordField.type = "text";
-                    this.classList.replace('fa-eye', 'fa-eye-slash');
+                    this.classList.remove('fa-eye');
+                    this.classList.add('fa-eye-slash');
                 } else {
                     passwordField.type = "password";
-                    this.classList.replace('fa-eye-slash', 'fa-eye');
+                    this.classList.remove('fa-eye-slash');
+                    this.classList.add('fa-eye');
                 }
             });
         });
 
-        // تنسيق الحقول تلقائياً
+        // Add class form-control to relevant form fields for styling
         document.addEventListener('DOMContentLoaded', function() {
-            const fieldsToStyle = ['username', 'full_name', 'profile_picture'];
+            const fieldsToStyle = ['username', 'full_name', 'email', 'profile_picture'];
             fieldsToStyle.forEach(fieldName => {
                 const field = document.querySelector(`[name="${fieldName}"]`);
-                if (field) field.classList.add('form-control');
+                if (field && !field.classList.contains('form-control')) {
+                    field.classList.add('form-control');
+                }
+            });
+            const selectFieldsToStyle = ['gender', 'relationship_status'];
+             selectFieldsToStyle.forEach(fieldName => {
+                const field = document.querySelector(`[name="${fieldName}"]`);
+                if (field && !field.classList.contains('form-select')) { // Use form-select for select elements
+                    field.classList.add('form-select');
+                }
             });
         });
     </script>
