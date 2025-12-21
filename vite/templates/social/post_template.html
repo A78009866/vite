@@ -550,7 +550,39 @@ function handleCommentSubmit(e) {
         });
     }
 }
+// أضف هذا الكود داخل الـ script الموجود في ملف الـ HTML
+document.querySelectorAll('.like-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const postId = this.dataset.postId;
+        const icon = document.querySelector(`.like-icon-${postId}`);
+        const likesCount = document.querySelector(`.likes-count-${postId}`);
 
+        // الرابط الصحيح الذي يطابق urls.py
+        fetch(`/post/${postId}/like/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}', // تأكد من وجود التوكن
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.liked) {
+                icon.classList.remove('far', 'text-white-80');
+                icon.classList.add('fas', 'fa-heart', 'text-danger');
+            } else {
+                icon.classList.remove('fas', 'fa-heart', 'text-danger');
+                icon.classList.add('far', 'fa-heart', 'text-white-80');
+            }
+            likesCount.textContent = data.likes_count;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showCustomToast('حدث خطأ، يرجى المحاولة لاحقاً', 'error');
+        });
+    });
+});
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.delete-comment-btn').forEach(btn => {
         if (btn.hasAttribute('data-delete-comment-listener-attached')) return;
