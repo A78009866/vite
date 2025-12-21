@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import dj_database_url
+import cloudinary  # أضف هذا السطر
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,14 +21,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',
     'django.contrib.humanize',
-    'crispy_forms',            # التصحيح: الاسم البرمجي للمكتبة
-    'crispy_bootstrap5',       # لدعم تنسيقات بوتستراب 5
+    'crispy_forms',
+    'crispy_bootstrap5',
     'vite', 
     'cloudinary',
     'cloudinary_storage',
 ]
 
-# إعدادات Crispy Forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
@@ -63,7 +63,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'messaging_platform.wsgi.application'
 ASGI_APPLICATION = 'messaging_platform.asgi.application'
 
-# قاعدة بيانات Neon (الرابط الخاص بك)
 NEON_DATABASE_URL = "postgresql://neondb_owner:npg_TR9JWPCDy7rh@ep-twilight-snow-ad502c4s-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require"
 
 DATABASES = {
@@ -93,12 +92,25 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'vite.CustomUser'
 
+# إعدادات التخزين
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dvp5v8v90',
-    'API_KEY': '164434235282213',
-    'API_SECRET': 'XbB0r2C0SIn7_28hP-EwQhO4S0A'
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'dvp5v8v90'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', '164434235282213'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', 'XbB0r2C0SIn7_28hP-EwQhO4S0A')
 }
+
+# تهيئة Cloudinary بشكل صريح لحل مشكلة ValueError
+cloudinary.config(
+    cloud_name = CLOUDINARY_STORAGE['CLOUD_NAME'],
+    api_key = CLOUDINARY_STORAGE['API_KEY'],
+    api_secret = CLOUDINARY_STORAGE['API_SECRET'],
+    secure = True
+)
+
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = 'home'
+
+# مفتاح Gemini AI (تأكد من إضافته في Render Environment أيضاً)
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
