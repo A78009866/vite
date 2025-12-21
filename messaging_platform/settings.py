@@ -1,16 +1,22 @@
 import os
 from pathlib import Path
 import dj_database_url
-import cloudinary  # أضف هذا السطر
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
+# مسار المشروع الأساسي
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# مفتاح الأمان (Secret Key)
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-m(x8xu413g_0^_dfyrw#)mjc_gn7szcc-kx^*pf9xhabh99gjs')
 
+# وضع التصحيح (Debug) - يفضل تحويله لـ False عند الإنتاج
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['social-vite.onrender.com', '127.0.0.1', 'localhost', '*']
 
+# التطبيقات المثبتة
 INSTALLED_APPS = [
     'daphne',
     'django.contrib.admin',
@@ -28,6 +34,7 @@ INSTALLED_APPS = [
     'cloudinary_storage',
 ]
 
+# إعدادات Crispy Forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
@@ -63,6 +70,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'messaging_platform.wsgi.application'
 ASGI_APPLICATION = 'messaging_platform.asgi.application'
 
+# قاعدة البيانات (Neon PostgreSQL)
 NEON_DATABASE_URL = "postgresql://neondb_owner:npg_TR9JWPCDy7rh@ep-twilight-snow-ad502c4s-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require"
 
 DATABASES = {
@@ -73,6 +81,7 @@ DATABASES = {
     )
 }
 
+# التحقق من كلمات المرور
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -80,11 +89,13 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# الإعدادات الإقليمية
 LANGUAGE_CODE = 'ar'
 TIME_ZONE = 'Africa/Algiers'
 USE_I18N = True
 USE_TZ = True
 
+# الملفات الساكنة (Static Files)
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -92,14 +103,15 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'vite.CustomUser'
 
-# إعدادات التخزين
+# --- إعدادات Cloudinary الجديدة المصححة ---
+
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'dvp5v8v90'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', '164434235282213'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', 'XbB0r2C0SIn7_28hP-EwQhO4S0A')
+    'CLOUD_NAME': 'duixjs8az',
+    'API_KEY': '143978951428697',
+    'API_SECRET': '9dX6eIvntdtGQIU7oXGMSRG9I2o'
 }
 
-# تهيئة Cloudinary بشكل صريح لحل مشكلة ValueError
+# تهيئة المكتبة للعمل مع الـ Views (حل مشكلة Authorization & API Key)
 cloudinary.config(
     cloud_name = CLOUDINARY_STORAGE['CLOUD_NAME'],
     api_key = CLOUDINARY_STORAGE['API_KEY'],
@@ -107,10 +119,12 @@ cloudinary.config(
     secure = True
 )
 
+# تعيين Cloudinary كمخزن افتراضي للملفات المرفوعة
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+# إعدادات تسجيل الدخول
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = 'home'
 
-# مفتاح Gemini AI (تأكد من إضافته في Render Environment أيضاً)
+# مفتاح Gemini AI
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
