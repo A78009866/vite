@@ -54,6 +54,5 @@ django-cloudinary-storage
 dj-database-url==2.3.0
 pytz
 daphne==4.1.2
-mysqlclient==2.2.1
 django-crispy-forms==2.4
 google-generativeai
