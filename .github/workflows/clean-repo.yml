@@ -1,0 +1,36 @@
+name: Clean Repository - Delete All Files
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "DELETE-ALL" to confirm deletion of all repository files'
+        required: true
+        type: string
+
+jobs:
+  clean-repo:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'DELETE-ALL'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Delete all files
+        run: |
+          git rm -rf .
+          echo "# Repository Cleaned" > README.md
+          git add README.md
+          git commit -m "Clean repository - all files deleted"
+          git push origin main
+          
+      - name: Confirmation
+        run: echo "All repository files have been deleted successfully."
